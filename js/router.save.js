@@ -4,7 +4,7 @@ L.easyButton('fa-save', function(btn, map) {
         "type": "FeatureCollection",
         "features": features
     };
-    router.getRouter().route(router.getWaypoints(),
+    routingControl.getRouter().route(routingControl.getWaypoints(),
         function(e, res) {
             for (r of res) {
                 var coords = r.coordinates;

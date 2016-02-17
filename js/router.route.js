@@ -20,13 +20,40 @@ var lineOptions = {
     }]
 };
 
-var router = L.Routing.control({
+var routingControl = L.Routing.control({
     reverseWaypoints: true,
     geocoder: geocoder,
     router: graphhopper,
     lineOptions: lineOptions,
 	position: 'topleft'
-}).addTo(map);
+});
+
+var buttonMode = L.easyButton({
+  states:[
+    {
+      stateName: 'racingbike',
+      icon: 'fa-rocket',
+      title: 'Vélo de course',
+      onClick: function(control){
+        control.state("bike");
+		graphhopper.options.urlParameters.vehicle = "bike";
+		routingControl.route();
+      }
+    }, {
+      stateName: 'bike',
+      icon: 'fa-bicycle',
+      title: 'Vélo',
+      onClick: function(control){
+        control.state("racingbike");
+		graphhopper.options.urlParameters.vehicle = "racingbike";
+		routingControl.route();
+      }
+    }
+  ]
+});
+
+buttonMode.addTo(map);
+routingControl.addTo(map);
 
 function button(label, container) {
     var btn = L.DomUtil.create('button', '', container);
@@ -41,12 +68,12 @@ map.on('click', function(e) {
         destBtn = button('Fin', container);
 
     L.DomEvent.on(startBtn, 'click', function() {
-        router.spliceWaypoints(0, 1, e.latlng);
+        routingControl.spliceWaypoints(0, 1, e.latlng);
         map.closePopup();
     });
 
     L.DomEvent.on(destBtn, 'click', function() {
-        router.spliceWaypoints(router.getWaypoints().length - 1, 1, e.latlng);
+        routingControl.spliceWaypoints(routingControl.getWaypoints().length - 1, 1, e.latlng);
         map.closePopup();
     });
 

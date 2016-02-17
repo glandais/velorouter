@@ -64,3 +64,8 @@ var overlayMaps = {};
 L.control.layers(baseMaps, overlayMaps, {
     collapsed: false
 }).addTo(map);
+
+map.on('baselayerchange',function(e){
+	var newLayer = e.layer;
+	
+});
