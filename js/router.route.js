@@ -1,7 +1,8 @@
 var geocoder = L.Control.Geocoder.nominatim();
 var graphhopper = L.Routing.graphHopper('7332d40a-d369-4462-9663-e30f61853b52', {
     urlParameters: {
-        vehicle: 'racingbike'
+        vehicle: 'racingbike',
+		locale: 'fr'
     }
 });
 var lineOptions = {
