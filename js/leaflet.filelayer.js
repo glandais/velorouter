@@ -88,7 +88,7 @@ var FileLoader = L.Class.extend({
 
 L.Control.FileLayerLoad = L.Control.extend({
     statics: {
-        TITLE: 'Load local file (GPX, KML, GeoJSON)',
+        TITLE: 'Charger un fichier GPX',
         LABEL: '&#8965;'
     },
     options: {

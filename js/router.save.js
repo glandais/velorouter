@@ -36,4 +36,4 @@ L.easyButton('fa-save', function(btn, map) {
             document.body.removeChild(element);
 
         });
-}).addTo(map);
+}, 'Enregistrer en GPX').addTo(map);

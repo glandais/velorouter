@@ -26,7 +26,8 @@ var routingControl = L.Routing.control({
     geocoder: geocoder,
     router: graphhopper,
     lineOptions: lineOptions,
-	position: 'topleft'
+	position: 'topleft',
+	language: 'fr'
 });
 
 var buttonMode = L.easyButton({
