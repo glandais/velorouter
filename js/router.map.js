@@ -1,6 +1,13 @@
 var map = L.map('map', {
     zooms: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21]
-}).setView([46.6, 2.5], 6);
+});
+
+if (!map.restoreView()) {
+    map.setView([46.6, 2.5], 6);
+}
+
+var hash = new L.Hash(map);
+var graphicScale = L.control.graphicScale().addTo(map);	
 
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
