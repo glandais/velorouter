@@ -27,7 +27,8 @@ var routingControl = L.Routing.control({
     router: graphhopper,
     lineOptions: lineOptions,
 	position: 'topleft',
-	language: 'fr'
+	language: 'fr',
+	collapsible: true
 });
 
 var buttonMode = L.easyButton({
@@ -64,7 +65,7 @@ function button(label, container) {
     return btn;
 }
 
-map.on('click', function(e) {
+map.on('contextmenu', function(e) {
     var container = L.DomUtil.create('div'),
         startBtn = button('Début', container),
         destBtn = button('Fin', container);
