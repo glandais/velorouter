@@ -42,6 +42,9 @@ var mb_rbh = L.tileLayer('https://api.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}
 var ocm = L.tileLayer('http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png', {
     nativeZooms: osmZooms
 });
+var stravaHeat = L.tileLayer('http://globalheat.strava.com/tiles/cycling/color1/{z}/{x}/{y}.png?v=6', {
+    nativeZooms: osmZooms
+});
 
 var gglRod_base = new L.Google('ROADMAP');
 var gglHyb_base = new L.Google('HYBRID');
@@ -66,7 +69,9 @@ var baseMaps = {
     "OSM classique": osm,
     "Google": gglRod,
 };
-var overlayMaps = {};
+var overlayMaps = {
+	"Strava heat map": stravaHeat
+};
 
 L.control.layers(baseMaps, overlayMaps).addTo(map);
 
