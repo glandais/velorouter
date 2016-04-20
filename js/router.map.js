@@ -79,3 +79,5 @@ map.on('baselayerchange',function(e){
 	var newLayer = e.layer;
 	
 });
+
+map.loadGpx();
