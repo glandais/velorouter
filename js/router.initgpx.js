@@ -7,9 +7,9 @@ var LoadGpxMixin = {
 			var vars = query.split('&');
 			for (var i = 0; i < vars.length; i++) {
 				var pair = vars[i].split('=');
-				if (pair[0] === "gpx") {
+				if (decodeURIComponent(pair[0]) === "gpx") {
 					var map_gpx = this;
-					new L.GPX(pair[1], {async: true}).on('loaded', function(e) {
+					new L.GPX(decodeURIComponent(pair[1]), {async: true}).on('loaded', function(e) {
 						map_gpx.fitBounds(e.target.getBounds());
 					}).addTo(map_gpx);
 				}
