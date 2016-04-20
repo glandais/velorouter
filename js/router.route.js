@@ -1,5 +1,6 @@
 var geocoder = L.Control.Geocoder.nominatim();
 var graphhopper = L.Routing.graphHopper('7332d40a-d369-4462-9663-e30f61853b52', {
+    serviceUrl: 'https://gabriel.landais.org/gh',
     urlParameters: {
         vehicle: 'racingbike',
 		locale: 'fr'
@@ -39,7 +40,7 @@ var buttonMode = L.easyButton({
       title: 'Vélo de course',
       onClick: function(control){
         control.state("bike");
-		graphhopper.options.urlParameters.vehicle = "bike";
+		graphhopper.options.urlParameters.vehicle = "bike2";
 		routingControl.route();
       }
     }, {
