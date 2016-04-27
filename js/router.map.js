@@ -83,8 +83,7 @@ map.on('baselayerchange',function(e){
 
 map.loadGpx();
 
-/*
+
 L.control.locate({
     position: "topright"
-}).addTo(map);
-*/
+}).addTo(map).start();
