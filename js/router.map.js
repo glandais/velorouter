@@ -81,3 +81,5 @@ map.on('baselayerchange',function(e){
 });
 
 map.loadGpx();
+
+L.control.locate().addTo(map);
