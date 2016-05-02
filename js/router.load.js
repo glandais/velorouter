@@ -15,6 +15,7 @@ var stylePoint = {
 L.Control.FileLayerLoad.LABEL = '<i class="fa fa-folder-open"></i>';
 L.Control.fileLayerLoad({
     fitBounds: true,
+	fileSizeLimit: 16384,
     layerOptions: {
         style: style,
         pointToLayer: function(data, latlng) {
