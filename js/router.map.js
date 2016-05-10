@@ -87,3 +87,4 @@ map.loadGpx();
 L.control.locate({
     position: "topright"
 }).addTo(map);//.start();
+
