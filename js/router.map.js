@@ -58,6 +58,11 @@ var gglSat_osm = L.layerGroup([gglSat_base, vector_osm]);
 
 var gglTer = new L.Google('TERRAIN');
 
+var bingSat_base = new L.BingLayer("AgHlyAnXLnTHypaYDwxsl5QdRNoq3eP2nLq9pMzeiY3QRYf0MirqvjMhduBs-5hl", {type: "Aerial"});
+var bingSat = L.layerGroup([bingSat_base]);
+var bingMix_base = new L.BingLayer("AgHlyAnXLnTHypaYDwxsl5QdRNoq3eP2nLq9pMzeiY3QRYf0MirqvjMhduBs-5hl", {type: "AerialWithLabels"});
+var bingMix = L.layerGroup([bingMix_base]);
+
 ocm.addTo(map);
 
 var baseMaps = {
@@ -69,6 +74,8 @@ var baseMaps = {
     "Hybride": gglSat_osm,
     "OSM classique": osm,
     "Google": gglRod,
+    "Bing satellite": bingSat,
+    "Bing hybride": bingMix,
 };
 var overlayMaps = {
 	"Strava heat map": stravaHeat
