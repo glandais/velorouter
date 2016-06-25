@@ -6,6 +6,10 @@
  */
 var APIkey= "5y8uj6lcncf69ar1ipqi57hh";
 
+if (window.__Geoportal$timer===undefined) {
+    var __Geoportal$timer= null;
+}
+
 /**
  * Function: checkApiLoading
  * Assess that needed classes have been loaded.
@@ -63,7 +67,7 @@ function loadAPI() {
     }
     
     Geoportal.GeoRMHandler.getConfig([APIkey], null,null, {
-        onContractsComplete: initMap
+        onContractsComplete: console.log('geoportail API loaded')
     });
 }
 

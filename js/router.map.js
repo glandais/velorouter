@@ -18,8 +18,18 @@ var ign = L.tileLayer.wms('http://mapsref.brgm.fr/wxs/refcom-brgm/refign', {
 });
 
 var ignApiKey = "5y8uj6lcncf69ar1ipqi57hh";
-var scanWmtsUrl	= "http://gpp3-wxs.ign.fr/"+ignApiKey +"/wmts?LAYER=GEOGRAPHICALGRIDSYSTEMS.MAPS.SCAN-EXPRESS.STANDARD&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&&TILEMATRIX={z}&TILECOL={x}&TILEROW={y}" ;
-//var ign = L.tileLayer(scanWmtsUrl, {attribution: '&copy; <a href="http://www.ign.fr/">IGN</a>'});
+var ignLayerMaps = "GEOGRAPHICALGRIDSYSTEMS.MAPS";
+var ignWmtsUrl = "http://wxs.ign.fr/" + ignApiKey + "/geoportail/wmts";
+
+var ign2 = new L.TileLayer.WMTS( ignWmtsUrl ,
+                               {
+                                   layer: ignLayerMaps,
+                                   style: "normal",
+                                   tilematrixSet: "PM",
+                                   format: "image/jpeg",
+                                   attribution: "<a href='https://github.com/mylen/leaflet.TileLayer.WMTS'>GitHub</a>&copy; <a href='http://www.ign.fr'>IGN</a>"
+                               }
+                              );
 
 var vector_osm = L.tileLayer('https://a.tiles.mapbox.com/v4/glandais.71bb17c0/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xhbmRhaXMiLCJhIjoiZGQxMDNjODBlN2ZkMDEyNjJjN2E5MjEzNzk2YWU0NDUifQ.YyPJXAyXxk0wuXB1DBqymg', {
     nativeZooms: osmZooms
@@ -72,6 +82,7 @@ ocm.addTo(map);
 var baseMaps = {
     "OSM velo": ocm,
     "IGN": ign,
+    "IGN2": ign2,
     "Michelin": michelin,
     "Relief": relief,
     "Satellite": gglSat,
