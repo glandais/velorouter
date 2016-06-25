@@ -11,17 +11,20 @@ var hash = new L.Hash(map);
 var graphicScale = L.control.graphicScale().addTo(map);	
 
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-
-var ign = L.tileLayer.wms('http://mapsref.brgm.fr/wxs/refcom-brgm/refign', {
-    layers: 'FONDS_SCAN',
-    format: 'image/png'
-});
-
 var ignApiKey = "5y8uj6lcncf69ar1ipqi57hh";
 var ignLayerMaps = "GEOGRAPHICALGRIDSYSTEMS.MAPS";
 var ignWmtsUrl = "http://wxs.ign.fr/" + ignApiKey + "/geoportail/wmts";
-
-var ign2 = new L.TileLayer.WMTS( ignWmtsUrl ,
+var ignMaps = new L.TileLayer.WMTS( ignWmtsUrl ,
+                               {
+                                   layer: ignLayerMaps,
+                                   style: "normal",
+                                   tilematrixSet: "PM",
+                                   format: "image/jpeg",
+                                   attribution: "<a href='https://github.com/mylen/leaflet.TileLayer.WMTS'>GitHub</a>&copy; <a href='http://www.ign.fr'>IGN</a>"
+                               }
+                              );
+ignLayerMaps = "ORTHOIMAGERY.ORTHOPHOTOS";
+var ignOrtho = new L.TileLayer.WMTS( ignWmtsUrl ,
                                {
                                    layer: ignLayerMaps,
                                    style: "normal",
@@ -68,7 +71,7 @@ var gglSat_base = new L.Google('SATELLITE');
 var michelin = L.layerGroup([ocm, michelin_base]);
 var gglRod = L.layerGroup([gglRod_base]);
 var gglSat = L.layerGroup([gglSat_base]);
-var gglSat_osm = L.layerGroup([gglSat_base, vector_osm]);
+var gglHyb = L.layerGroup([gglHyb_base]);
 
 var gglTer = new L.Google('TERRAIN');
 
@@ -81,14 +84,14 @@ ocm.addTo(map);
 
 var baseMaps = {
     "OSM velo": ocm,
-    "IGN": ign,
-    "IGN2": ign2,
-    "Michelin": michelin,
-    "Relief": relief,
-    "Satellite": gglSat,
-    "Hybride": gglSat_osm,
     "OSM classique": osm,
-    "Google": gglRod,
+    "IGN cartes": ignMaps,
+    "Michelin": michelin,
+    "Google Maps": gglRod,
+    "Relief": relief,
+    "Google Satellite": gglSat,
+    "Google Hybride": gglHyb,
+    "IGN Ortho": ignOrtho,
     "Bing satellite": bingSat,
     "Bing hybride": bingMix,
 };
