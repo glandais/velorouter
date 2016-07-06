@@ -13,7 +13,7 @@ var graphicScale = L.control.graphicScale().addTo(map);
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 var ignApiKey = "5y8uj6lcncf69ar1ipqi57hh";
 var ignLayerMaps = "GEOGRAPHICALGRIDSYSTEMS.MAPS";
-var ignWmtsUrl = "http://wxs.ign.fr/" + ignApiKey + "/geoportail/wmts";
+var ignWmtsUrl = "https://wxs.ign.fr/" + ignApiKey + "/geoportail/wmts";
 var ignMaps = new L.TileLayer.WMTS( ignWmtsUrl ,
                                {
                                    layer: ignLayerMaps,
