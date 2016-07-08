@@ -20,7 +20,7 @@ var ignMaps = new L.TileLayer.WMTS( ignWmtsUrl ,
                                    style: "normal",
                                    tilematrixSet: "PM",
                                    format: "image/jpeg",
-                                   attribution: "<a href='https://github.com/mylen/leaflet.TileLayer.WMTS'>GitHub</a>&copy; <a href='http://www.ign.fr'>IGN</a>"
+                                   attribution: "<a href='http://www.ign.fr'>IGN</a>"
                                }
                               );
 ignLayerMaps = "ORTHOIMAGERY.ORTHOPHOTOS";
@@ -30,7 +30,17 @@ var ignOrtho = new L.TileLayer.WMTS( ignWmtsUrl ,
                                    style: "normal",
                                    tilematrixSet: "PM",
                                    format: "image/jpeg",
-                                   attribution: "<a href='https://github.com/mylen/leaflet.TileLayer.WMTS'>GitHub</a>&copy; <a href='http://www.ign.fr'>IGN</a>"
+                                   attribution: "<a href='http://www.ign.fr'>IGN</a>"
+                               }
+                              );
+
+var ignEsMaps = new L.TileLayer.WMTS( "https://www.ign.es/wmts/mapa-raster" ,
+                               {
+                                   layer: "MTN",
+                                   style: "normal",
+                                   tilematrixSet: "PM",
+                                   format: "image/jpeg",
+                                   attribution: "<a href='http://www.ign.es'>IGN</a>"
                                }
                               );
 
@@ -88,6 +98,7 @@ var baseMaps = {
     "IGN cartes": ignMaps,
     "Michelin": michelin,
     "Google Maps": gglRod,
+    "IGN Espagne": ignEsMaps,
     "Relief": relief,
     "Google Satellite": gglSat,
     "Google Hybride": gglHyb,
