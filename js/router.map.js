@@ -38,7 +38,7 @@ var ignEsMaps = new L.TileLayer.WMTS( "https://www.ign.es/wmts/mapa-raster" ,
                                {
                                    layer: "MTN",
                                    style: "normal",
-                                   tilematrixSet: "PM",
+                                   tilematrixSet: "GoogleMapsCompatible",
                                    format: "image/jpeg",
                                    attribution: "<a href='http://www.ign.es'>IGN</a>"
                                }
