@@ -1,8 +1,8 @@
 var geocoder = L.Control.Geocoder.nominatim();
 var graphhopper = L.Routing.graphHopper('7332d40a-d369-4462-9663-e30f61853b52', {
-    serviceUrl: 'https://gabriel.landais.org/gh',
+    serviceUrl: 'https://gabriel.landais.org/gh2',
     urlParameters: {
-        vehicle: 'racingbike',
+        vehicle: 'racingbike2',
 		locale: 'fr'
     }
 });
@@ -32,6 +32,7 @@ var routingControl = L.Routing.control({
 	collapsible: true
 });
 
+/*
 var buttonMode = L.easyButton({
   states:[
     {
@@ -55,8 +56,8 @@ var buttonMode = L.easyButton({
     }
   ]
 });
-
 buttonMode.addTo(map);
+*/
 routingControl.addTo(map);
 
 function button(label, container) {
