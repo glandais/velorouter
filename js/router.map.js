@@ -121,6 +121,9 @@ map.loadGpx();
 
 
 L.control.locate({
-    position: "topright"
+    position: "topright",
+	locateOptions: {
+               enableHighAccuracy: true
+	}
 }).addTo(map);//.start();
 
