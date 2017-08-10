@@ -22,10 +22,20 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
     }
 
     // attach your plugin to the global 'L' variable
-    if(typeof window !== 'undefined' && window.L){
+    if (typeof window !== 'undefined' && window.L){
         window.L.Control.Locate = factory(L);
     }
 } (function (L) {
+    var LDomUtilApplyClassesMethod = function(method, element, classNames) {
+        classNames = classNames.split(' ');
+        classNames.forEach(function(className) {
+            L.DomUtil[method].call(this, element, className);
+        });
+    };
+
+    var addClasses = function(el, names) { LDomUtilApplyClassesMethod('addClass', el, names); };
+    var removeClasses = function(el, names) { LDomUtilApplyClassesMethod('removeClass', el, names); };
+
     var LocateControl = L.Control.extend({
         options: {
             /** Position of the control */
@@ -49,6 +59,8 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
             setView: 'untilPan',
             /** Keep the current map zoom level when setting the view and only pan. */
             keepCurrentZoomLevel: false,
+            /** Smooth pan and zoom to the location of the marker. Only works in Leaflet 1.0+. */
+            flyTo: false,
             /**
              * The user location can be inside and outside the current view when the user clicks on the
              * control that is already active. Both cases can be configures separately.
@@ -62,6 +74,17 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                 /** What should happen if the user clicks on the control while the location is outside the current view. */
                 outOfView: 'setView',
             },
+            /**
+             * If set, save the map bounds just before centering to the user's
+             * location. When control is disabled, set the view back to the
+             * bounds that were saved.
+             */
+            returnToPrevBounds: false,
+            /**
+             * Keep a cache of the location after the user deactivates the control. If set to false, the user has to wait
+             * until the locate API returns a new location before they see where they are again.
+             */
+            cacheLocation: true,
             /** If set, a circle that shows the location accuracy is drawn. */
             drawCircle: true,
             /** If set, the marker at the users' location is drawn. */
@@ -76,7 +99,7 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                 weight: 2,
                 opacity: 0.5
             },
-            /** Inner marker style properties. */
+            /** Inner marker style properties. Only works if your marker class supports `setStyle`. */
             markerStyle: {
                 color: '#136AEC',
                 fillColor: '#2A93EE',
@@ -103,6 +126,17 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
             circlePadding: [0, 0],
             /** Use metric units. */
             metric: true,
+            /**
+             * This callback can be used in case you would like to override button creation behavior.
+             * This is useful for DOM manipulation frameworks such as angular etc.
+             * This function should return an object with HtmlElement for the button (link property) and the icon (icon property).
+             */
+            createButtonCallback: function (container, options) {
+                var link = L.DomUtil.create('a', 'leaflet-bar-part leaflet-bar-part-single', container);
+                link.title = options.strings.title;
+                var icon = L.DomUtil.create(options.iconElementTag, options.icon, link);
+                return { link: link, icon: icon };
+            },
             /** This event is called in case of any location error that is not a time out error. */
             onLocationError: function(err, control) {
                 alert(err.message);
@@ -158,11 +192,11 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
             this._layer = this.options.layer || new L.LayerGroup();
             this._layer.addTo(map);
             this._event = undefined;
+            this._prevBounds = null;
 
-            this._link = L.DomUtil.create('a', 'leaflet-bar-part leaflet-bar-part-single', container);
-            this._link.href = '#';
-            this._link.title = this.options.strings.title;
-            this._icon = L.DomUtil.create(this.options.iconElementTag, this.options.icon, this._link);
+            var linkAndIcon = this.options.createButtonCallback(container, this.options);
+            this._link = linkAndIcon.link;
+            this._icon = linkAndIcon.icon;
 
             L.DomEvent
                 .on(this._link, 'click', L.DomEvent.stopPropagation)
@@ -196,9 +230,16 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
                         break;
                     case 'stop':
                         this.stop();
+                        if (this.options.returnToPrevBounds) {
+                            var f = this.options.flyTo ? this._map.flyToBounds : this._map.fitBounds;
+                            f.bind(this._map)(this._prevBounds);
+                        }
                         break;
                 }
             } else {
+                if (this.options.returnToPrevBounds) {
+                  this._prevBounds = this._map.getBounds();
+                }
                 this.start();
             }
 
@@ -269,6 +310,10 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
             this._map.stopLocate();
             this._active = false;
 
+            if (!this.options.cacheLocation) {
+                this._event = undefined;
+            }
+
             // unbind event listeners
             this._map.off('locationfound', this._onLocationFound, this);
             this._map.off('locationerror', this._onLocationError, this);
@@ -279,19 +324,22 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
          * Zoom (unless we should keep the zoom level) and an to the current view.
          */
         setView: function() {
+            this._drawMarker();
             if (this._isOutsideMapBounds()) {
+                this._event = undefined;  // clear the current location so we can get back into the bounds
                 this.options.onLocationOutsideMapBounds(this);
             } else {
                 if (this.options.keepCurrentZoomLevel) {
-                    this._map.panTo([this._event.latitude, this._event.longitude]);
+                    var f = this.options.flyTo ? this._map.flyTo : this._map.panTo;
+                    f.bind(this._map)([this._event.latitude, this._event.longitude]);
                 } else {
-                    this._map.fitBounds(this._event.bounds, {
+                    var f = this.options.flyTo ? this._map.flyToBounds : this._map.fitBounds;
+                    f.bind(this._map)(this._event.bounds, {
                         padding: this.options.circlePadding,
                         maxZoom: this.options.locateOptions.maxZoom
                     });
                 }
             }
-            this._drawMarker();
         },
 
         /**
@@ -330,11 +378,14 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
             // small inner marker
             if (this.options.drawMarker) {
                 var mStyle = this._isFollowing() ? this.options.followMarkerStyle : this.options.markerStyle;
-
                 if (!this._marker) {
                     this._marker = new this.options.markerClass(latlng, mStyle).addTo(this._layer);
                 } else {
-                    this._marker.setLatLng(latlng).setStyle(mStyle);
+                    this._marker.setLatLng(latlng);
+                    // If the markerClass can be updated with setStyle, update it.
+                    if (this._marker.setStyle) {
+                        this._marker.setStyle(mStyle);
+                    }
                 }
             }
 
@@ -484,23 +535,23 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
          */
         _setClasses: function(state) {
             if (state == 'requesting') {
-                L.DomUtil.removeClasses(this._container, "active following");
-                L.DomUtil.addClasses(this._container, "requesting");
+                removeClasses(this._container, "active following");
+                addClasses(this._container, "requesting");
 
-                L.DomUtil.removeClasses(this._icon, this.options.icon);
-                L.DomUtil.addClasses(this._icon, this.options.iconLoading);
+                removeClasses(this._icon, this.options.icon);
+                addClasses(this._icon, this.options.iconLoading);
             } else if (state == 'active') {
-                L.DomUtil.removeClasses(this._container, "requesting following");
-                L.DomUtil.addClasses(this._container, "active");
+                removeClasses(this._container, "requesting following");
+                addClasses(this._container, "active");
 
-                L.DomUtil.removeClasses(this._icon, this.options.iconLoading);
-                L.DomUtil.addClasses(this._icon, this.options.icon);
+                removeClasses(this._icon, this.options.iconLoading);
+                addClasses(this._icon, this.options.icon);
             } else if (state == 'following') {
-                L.DomUtil.removeClasses(this._container, "requesting");
-                L.DomUtil.addClasses(this._container, "active following");
+                removeClasses(this._container, "requesting");
+                addClasses(this._container, "active following");
 
-                L.DomUtil.removeClasses(this._icon, this.options.iconLoading);
-                L.DomUtil.addClasses(this._icon, this.options.icon);
+                removeClasses(this._icon, this.options.iconLoading);
+                addClasses(this._icon, this.options.icon);
             }
         },
 
@@ -512,8 +563,8 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
             L.DomUtil.removeClass(this._container, "active");
             L.DomUtil.removeClass(this._container, "following");
 
-            L.DomUtil.removeClasses(this._icon, this.options.iconLoading);
-            L.DomUtil.addClasses(this._icon, this.options.icon);
+            removeClasses(this._icon, this.options.iconLoading);
+            addClasses(this._icon, this.options.icon);
         },
 
         /**
@@ -535,20 +586,6 @@ You can find the project at: https://github.com/domoritz/leaflet-locatecontrol
     L.control.locate = function (options) {
         return new L.Control.Locate(options);
     };
-
-    (function(){
-      // leaflet.js raises bug when trying to addClass / removeClass multiple classes at once
-      // Let's create a wrapper on it which fixes it.
-      var LDomUtilApplyClassesMethod = function(method, element, classNames) {
-        classNames = classNames.split(' ');
-        classNames.forEach(function(className) {
-            L.DomUtil[method].call(this, element, className);
-        });
-      };
-
-      L.DomUtil.addClasses = function(el, names) { LDomUtilApplyClassesMethod('addClass', el, names); };
-      L.DomUtil.removeClasses = function(el, names) { LDomUtilApplyClassesMethod('removeClass', el, names); };
-    })();
 
     return LocateControl;
 }, window));
