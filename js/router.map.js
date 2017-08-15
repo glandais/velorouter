@@ -142,3 +142,7 @@ var drawControl = new L.Control.Draw({
 	}
 });
 map.addControl(drawControl);
+
+map.on(L.Draw.Event.CREATED; function (e) {
+   drawnItems.addLayer(e.layer);
+});
