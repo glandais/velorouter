@@ -1,7 +1,6 @@
 var map = L.map('map', {
     zooms: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-	fullscreenControl: true,
-	drawControl: true
+	fullscreenControl: true
 });
 
 if (!map.restoreView()) {
@@ -128,3 +127,18 @@ L.control.locate({
 	}
 }).addTo(map);//.start();
 
+// FeatureGroup is to store editable layers
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+var drawControl = new L.Control.Draw({
+	draw: {
+		polygon: false,
+		rectangle: false,
+		circle: false,
+		marker: false
+	},
+	edit: {
+		featureGroup: drawnItems
+	}
+});
+map.addControl(drawControl);
