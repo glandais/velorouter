@@ -70,7 +70,7 @@ var mb_rbh = L.tileLayer('https://api.mapbox.com/v4/mapbox.run-bike-hike/{z}/{x}
 var ocm = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=eb3d81660e5a465aacc7082bce749c3b', {
     nativeZooms: osmZooms
 });
-var stravaHeat = L.tileLayer('http://globalheat.strava.com/tiles/cycling/color1/{z}/{x}/{y}.png?v=6', {
+var stravaHeat = L.tileLayer('https://heatmap-external-a.strava.com/tiles-auth/ride/bluered/{z}/{x}/{y}.png', {
     nativeZooms: osmZooms
 });
 
