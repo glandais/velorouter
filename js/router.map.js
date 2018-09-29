@@ -146,3 +146,9 @@ map.addControl(drawControl);
 map.on(L.Draw.Event.CREATED, function (e) {
    drawnItems.addLayer(e.layer);
 });
+
+L.easyButton('fa-file-image-o', function(btn, map) {
+	leafletImage(map, function(err, canvas) {
+		window.location.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
+	});
+}, 'Enregistrer l''image').addTo(map);
