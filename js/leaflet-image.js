@@ -116,8 +116,8 @@ module.exports = function leafletImage(map, callback) {
             }
 
             var tilePos = originalTilePoint
-                .scaleBy(new L.Point(tileSize, tileSize))
-                .subtract(bounds.min);
+							.multiplyBy(tileSize)
+							.subtract(bounds.min);
 
             if (tilePoint.y >= 0) {
                 if (isCanvasLayer) {
