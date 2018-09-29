@@ -151,4 +151,4 @@ L.easyButton('fa-file-image-o', function(btn, map) {
 	leafletImage(map, function(err, canvas) {
 		window.location.href = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
 	});
-}, 'Enregistrer l''image').addTo(map);
+}, 'Enregistrer l\'image').addTo(map);
