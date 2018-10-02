@@ -1,6 +1,6 @@
 var map = L.map('map', {
     zooms: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
-	fullscreenControl: true
+    fullscreenControl: true
 });
 
 if (!map.restoreView()) {
@@ -8,41 +8,41 @@ if (!map.restoreView()) {
 }
 
 var hash = new L.Hash(map);
-var graphicScale = L.control.graphicScale().addTo(map);	
+var graphicScale = L.control.graphicScale().addTo(map);
 
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 var ignApiKey = "5y8uj6lcncf69ar1ipqi57hh";
 var ignLayerMaps = "GEOGRAPHICALGRIDSYSTEMS.MAPS";
 var ignWmtsUrl = "https://wxs.ign.fr/" + ignApiKey + "/geoportail/wmts";
-var ignMaps = new L.TileLayer.WMTS( ignWmtsUrl ,
-                               {
-                                   layer: ignLayerMaps,
-                                   style: "normal",
-                                   tilematrixSet: "PM",
-                                   format: "image/jpeg",
-                                   attribution: "<a href='http://www.ign.fr'>IGN</a>"
-                               }
-                              );
+var ignMaps = new L.TileLayer.WMTS(ignWmtsUrl,
+    {
+        layer: ignLayerMaps,
+        style: "normal",
+        tilematrixSet: "PM",
+        format: "image/jpeg",
+        attribution: "<a href='http://www.ign.fr'>IGN</a>"
+    }
+);
 ignLayerMaps = "ORTHOIMAGERY.ORTHOPHOTOS";
-var ignOrtho = new L.TileLayer.WMTS( ignWmtsUrl ,
-                               {
-                                   layer: ignLayerMaps,
-                                   style: "normal",
-                                   tilematrixSet: "PM",
-                                   format: "image/jpeg",
-                                   attribution: "<a href='http://www.ign.fr'>IGN</a>"
-                               }
-                              );
+var ignOrtho = new L.TileLayer.WMTS(ignWmtsUrl,
+    {
+        layer: ignLayerMaps,
+        style: "normal",
+        tilematrixSet: "PM",
+        format: "image/jpeg",
+        attribution: "<a href='http://www.ign.fr'>IGN</a>"
+    }
+);
 
-var ignEsMaps = new L.TileLayer.WMTS( "https://www.ign.es/wmts/mapa-raster" ,
-                               {
-                                   layer: "MTN",
-                                   style: "normal",
-                                   tilematrixSet: "GoogleMapsCompatible",
-                                   format: "image/jpeg",
-                                   attribution: "<a href='http://www.ign.es'>IGN</a>"
-                               }
-                              );
+var ignEsMaps = new L.TileLayer.WMTS("https://www.ign.es/wmts/mapa-raster",
+    {
+        layer: "MTN",
+        style: "normal",
+        tilematrixSet: "GoogleMapsCompatible",
+        format: "image/jpeg",
+        attribution: "<a href='http://www.ign.es'>IGN</a>"
+    }
+);
 
 var vector_osm = L.tileLayer('https://a.tiles.mapbox.com/v4/glandais.71bb17c0/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xhbmRhaXMiLCJhIjoiZGQxMDNjODBlN2ZkMDEyNjJjN2E5MjEzNzk2YWU0NDUifQ.YyPJXAyXxk0wuXB1DBqymg', {
     nativeZooms: osmZooms
@@ -85,9 +85,9 @@ var gglHyb = L.layerGroup([gglHyb_base]);
 
 var gglTer = new L.Google('TERRAIN');
 
-var bingSat_base = new L.BingLayer("AgHlyAnXLnTHypaYDwxsl5QdRNoq3eP2nLq9pMzeiY3QRYf0MirqvjMhduBs-5hl", {type: "Aerial"});
+var bingSat_base = new L.BingLayer("AgHlyAnXLnTHypaYDwxsl5QdRNoq3eP2nLq9pMzeiY3QRYf0MirqvjMhduBs-5hl", { type: "Aerial" });
 var bingSat = L.layerGroup([bingSat_base]);
-var bingMix_base = new L.BingLayer("AgHlyAnXLnTHypaYDwxsl5QdRNoq3eP2nLq9pMzeiY3QRYf0MirqvjMhduBs-5hl", {type: "AerialWithLabels"});
+var bingMix_base = new L.BingLayer("AgHlyAnXLnTHypaYDwxsl5QdRNoq3eP2nLq9pMzeiY3QRYf0MirqvjMhduBs-5hl", { type: "AerialWithLabels" });
 var bingMix = L.layerGroup([bingMix_base]);
 
 ocm.addTo(map);
@@ -107,42 +107,36 @@ var baseMaps = {
     "Bing hybride": bingMix,
 };
 var overlayMaps = {
-	"Strava heat map": stravaHeat
+    "Strava heat map": stravaHeat
 };
 
 L.control.layers(baseMaps, overlayMaps).addTo(map);
 
-map.on('baselayerchange',function(e){
-	var newLayer = e.layer;
-	
-});
-
 map.loadGpx();
-
 
 L.control.locate({
     position: "topright",
-	locateOptions: {
-               enableHighAccuracy: true
-	}
+    locateOptions: {
+        enableHighAccuracy: true
+    }
 }).addTo(map);//.start();
 
 // FeatureGroup is to store editable layers
 var drawnItems = new L.FeatureGroup();
 map.addLayer(drawnItems);
 var drawControl = new L.Control.Draw({
-	draw: {
-		polygon: false,
-		rectangle: false,
-		circle: false,
-		marker: false
-	},
-	edit: {
-		featureGroup: drawnItems
-	}
+    draw: {
+        polygon: false,
+        rectangle: false,
+        circle: false,
+        marker: false
+    },
+    edit: {
+        featureGroup: drawnItems
+    }
 });
 map.addControl(drawControl);
 
 map.on(L.Draw.Event.CREATED, function (e) {
-   drawnItems.addLayer(e.layer);
+    drawnItems.addLayer(e.layer);
 });

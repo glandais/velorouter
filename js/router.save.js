@@ -1,67 +1,29 @@
-L.easyButton('fa-save', function(btn, map) {
-	if (drawnItems.getLayers().length > 0) {
-		geojson = drawnItems.toGeoJSON();
-		gpxData = togpx(geojson);
+L.easyButton('fa-save', function (btn, map) {
+    if (drawnItems.getLayers().length > 0) {
+        geojson = drawnItems.toGeoJSON();
+        gpxData = togpx(geojson);
 
-            var element = document.createElement('a');
-            element.setAttribute('href', 'data:application/gpx+xml;charset=utf-8,' + encodeURIComponent(gpxData));
-            element.setAttribute('download', 'export.gpx');
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:application/gpx+xml;charset=utf-8,' + encodeURIComponent(gpxData));
+        element.setAttribute('download', 'export.gpx');
 
-            element.style.display = 'none';
-            document.body.appendChild(element);
+        element.style.display = 'none';
+        document.body.appendChild(element);
 
-            element.click();
+        element.click();
 
-            document.body.removeChild(element);
-		
-	}
-	if (map.__gpx) {
-            var element = document.createElement('a');
-            element.setAttribute('href', map.__gpx);
+        document.body.removeChild(element);
 
-            element.style.display = 'none';
-            document.body.appendChild(element);
+    } else if (map.__gpx) {
+        var element = document.createElement('a');
+        element.setAttribute('href', map.__gpx);
 
-            element.click();
+        element.style.display = 'none';
+        document.body.appendChild(element);
 
-            document.body.removeChild(element);		
-		return;
-	}
-    var features = [];
-    var geojson = {
-        "type": "FeatureCollection",
-        "features": features
-    };
-    routingControl.getRouter().route(routingControl.getWaypoints(),
-        function(e, res) {
-            for (r of res) {
-                var coords = r.coordinates;
-                var coords2 = coords.map(function(c) {
-                    return [c.lng, c.lat];
-                });
-                features.push({
-                    "type": "Feature",
-                    "properties": {
-                        "name": "route"
-                    },
-                    "geometry": {
-                        "type": "LineString",
-                        "coordinates": coords2
-                    }
-                });
-            }
-            gpxData = togpx(geojson);
+        element.click();
 
-            var element = document.createElement('a');
-            element.setAttribute('href', 'data:application/gpx+xml;charset=utf-8,' + encodeURIComponent(gpxData));
-            element.setAttribute('download', 'export.gpx');
-
-            element.style.display = 'none';
-            document.body.appendChild(element);
-
-            element.click();
-
-            document.body.removeChild(element);
-
-        });
+        document.body.removeChild(element);
+        return;
+    }
 }, 'Enregistrer en GPX').addTo(map);
