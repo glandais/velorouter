@@ -46,12 +46,12 @@ var FileLoader = L.Class.extend({
         var reader = new FileReader();
         reader.onload = L.Util.bind(function (e) {
             try {
-                this.fire('data:loading', {filename: file.name, format: ext});
+                this.fire('data:loading', { filename: file.name, format: ext });
                 var layer = parser.call(this, e.target.result, ext);
-                this.fire('data:loaded', {layer: layer, filename: file.name, format: ext});
+                this.fire('data:loaded', { layer: layer, filename: file.name, format: ext });
             }
             catch (err) {
-                this.fire('data:error', {error: err});
+                this.fire('data:error', { error: err });
             }
 
         }, this);
@@ -71,6 +71,21 @@ var FileLoader = L.Class.extend({
 
         if (this.options.addToMap) {
             layer.addTo(this._map);
+            L.polylineDecorator(layer.getLayers(), {
+                patterns: [
+                    {
+                        offset: '5%',
+                        repeat: '10%',
+                        symbol:
+                        L.Symbol.marker({rotate: true, markerOptions: {
+                            icon: L.icon({
+                                iconUrl: 'arrow.png',
+                                iconAnchor: [16, 16] 
+                            })
+                        }})
+                    }
+                ]
+            }).addTo(map);
         }
         return layer;
     },
@@ -78,7 +93,7 @@ var FileLoader = L.Class.extend({
     _convertToGeoJSON: function (content, format) {
         // Format is either 'gpx' or 'kml'
         if (typeof content == 'string') {
-            content = ( new window.DOMParser() ).parseFromString(content, "text/xml");
+            content = (new window.DOMParser()).parseFromString(content, "text/xml");
         }
         var geojson = toGeoJSON[format](content);
         return this._loadGeoJSON(geojson);
@@ -144,7 +159,7 @@ L.Control.FileLayerLoad = L.Control.extend({
 
                 var files = Array.prototype.slice.apply(e.dataTransfer.files),
                     i = files.length;
-                setTimeout(function(){
+                setTimeout(function () {
                     fileLoader.load(files.shift());
                     if (files.length > 0) {
                         setTimeout(arguments.callee, 25);

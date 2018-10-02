@@ -1,8 +1,8 @@
 var style = {
     color: 'purple',
-    opacity: 0.5,
-    fillOpacity: 0.5,
-    weight: 6,
+    opacity: 0.6,
+    fillOpacity: 0.6,
+    weight: 8,
     clickable: false
 };
 var stylePoint = {
