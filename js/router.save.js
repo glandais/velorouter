@@ -46,7 +46,7 @@ L.easyButton('fa-image', function (btn, map) {
 		formData.append("tileZoom", "12");
 		formData.append("tileUrl", "https://foil.fr/magic/magicCache/{z}/{x}/{y}.png");
 		var gpxFile = new Blob([gpxData], { type: "application/gpx+xml;charset=utf-8"});
-		formData.append("file", blob);
+		formData.append("file", gpxFile);
 		
 		var request = new XMLHttpRequest();
 		request.open("POST", "https://gpx2web.appspot.com");
