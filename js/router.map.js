@@ -2,12 +2,12 @@ var map = L.map('map', {
     zooms: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21],
     fullscreenControl: true
 });
+var controlLayers;
 
 if (!map.restoreView()) {
     map.setView([46.6, 2.5], 6);
 }
 
-var hash = new L.Hash(map);
 var graphicScale = L.control.graphicScale().addTo(map);
 
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
@@ -110,7 +110,25 @@ var overlayMaps = {
     "Strava heat map": stravaHeat
 };
 
-L.control.layers(baseMaps, overlayMaps).addTo(map);
+var allMaps = {
+    "ocm": ocm,
+    "osm": osm,
+    "ignFr": ignMaps,
+    "michelinfr": michelin,
+    "gglRod": gglRod,
+    "ignEs": ignEsMaps,
+    "relief": relief,
+    "gglSat": gglSat,
+    "gglHyb": gglHyb,
+    "ignOrtho": ignOrtho,
+    "bingSat": bingSat,
+    "bingMix": bingMix,
+    "stravaHeat": stravaHeat
+};
+var hash = new L.Hash(map, allMaps);
+
+controlLayers = L.control.layers(baseMaps, overlayMaps);
+controlLayers.addTo(map);
 
 map.loadGpx();
 
