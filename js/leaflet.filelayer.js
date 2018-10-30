@@ -71,6 +71,7 @@ var FileLoader = L.Class.extend({
 
         if (this.options.addToMap) {
             layer.addTo(this._map);
+			this._map.__layer = layer;
             L.polylineDecorator(layer.getLayers(), {
                 patterns: [
                     {
