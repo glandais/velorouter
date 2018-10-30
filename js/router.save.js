@@ -12,6 +12,7 @@ L.easyButton('fa-save', function (btn, map) {
         element.href = 'data:application/gpx+xml;charset=utf-8,' + encodeURIComponent(gpxData);
         element.download = 'export.gpx';
         element.style.display = 'none';
+        document.body.appendChild(element);
         element.click();
         document.body.removeChild(element);		
 	} else if (map.__gpx) {
@@ -48,7 +49,9 @@ L.easyButton('fa-image', function (btn, map) {
 			a.style.display = 'none';
 			a.href = window.URL.createObjectURL(blob);
 			a.download = "export.png";
+			document.body.appendChild(a);
 			a.click();
+			document.body.removeChild(a);
 		}
 		request.open("POST", "https://gpx2web.appspot.com");
 		request.send(formData);
