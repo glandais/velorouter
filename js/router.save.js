@@ -36,9 +36,21 @@ L.easyButton('fa-image', function (btn, map) {
         gpxData = togpx(geojson);
     }
 	if (gpxData) {
+        var tileUrl;
+        map.eachLayer(function(layer) {
+            if (map.hasLayer(layer) && layer._url) {
+                tileUrl = layer._url;
+            }
+        });
+        if (!tileUrl) {
+            alert('Unsupported map');
+            return;
+        }
+        var zoom = map._zoom;
+
 		var formData = new FormData();
-		formData.append("tileZoom", "12");
-		formData.append("tileUrl", "https://foil.fr/magic/magicCache/{z}/{x}/{y}.png");
+        formData.append("tileZoom", zoom);
+		formData.append("tileUrl", tileUrl);
 		var gpxFile = new Blob([gpxData], { type: "application/gpx+xml;charset=utf-8"});
 		formData.append("file", gpxFile);
 		var request = new XMLHttpRequest();
