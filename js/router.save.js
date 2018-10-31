@@ -36,17 +36,22 @@ L.easyButton('fa-image', function (btn, map) {
         gpxData = togpx(geojson);
     }
 	if (gpxData) {
-        var tileUrl;
+        var imageLayer;
+        var zoom = map._zoom;
         map.eachLayer(function(layer) {
             if (map.hasLayer(layer) && layer._url) {
-                tileUrl = layer._url;
+                imageLayer = layer;
             }
         });
-        if (!tileUrl) {
+        if (!imageLayer._url) {
             alert('Unsupported map');
             return;
         }
-        var zoom = map._zoom;
+        var tileUrl = imageLayer._url;
+        if (imageLayer.options && imageLayer.options.nativeZooms && !(imageLayer.options.nativeZooms.includes(zoom))) {
+            alert('Unsupported zoom (supported : ' + imageLayer.options.nativeZooms + ')');
+            return;
+        }
 
 		var formData = new FormData();
         formData.append("tileZoom", zoom);
