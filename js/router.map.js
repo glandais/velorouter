@@ -4,11 +4,9 @@ var map = L.map('map', {
 });
 var controlLayers;
 
-if (!map.restoreView()) {
+if (!location.hash && !map.restoreView()) {
     map.setView([46.6, 2.5], 6);
 }
-
-var graphicScale = L.control.graphicScale().addTo(map);
 
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 var ignApiKey = "5y8uj6lcncf69ar1ipqi57hh";
@@ -61,6 +59,9 @@ var michelin_base = L.tileLayer('https://foil.fr/magic/magicCache/{z}/{x}/{y}.pn
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     nativeZooms: osmZooms
 });
+var opentopomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
+    nativeZooms: osmZooms
+});
 var mb_out = L.tileLayer('https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xhbmRhaXMiLCJhIjoiZGQxMDNjODBlN2ZkMDEyNjJjN2E5MjEzNzk2YWU0NDUifQ.YyPJXAyXxk0wuXB1DBqymg', {
     nativeZooms: osmZooms
 });
@@ -95,6 +96,7 @@ ocm.addTo(map);
 var baseMaps = {
     "OSM velo": ocm,
     "OSM classique": osm,
+    "OpenTopoMap": opentopomap,
     "IGN cartes": ignMaps,
     "Michelin": michelin,
     "Google Maps": gglRod,
@@ -113,6 +115,7 @@ var overlayMaps = {
 var allMaps = {
     "ocm": ocm,
     "osm": osm,
+    "otm": opentopomap,
     "ignFr": ignMaps,
     "michelinfr": michelin,
     "gglRod": gglRod,
@@ -131,7 +134,7 @@ controlLayers = L.control.layers(baseMaps, overlayMaps);
 controlLayers.addTo(map);
 
 map.loadGpx();
-
+var graphicScale = L.control.graphicScale().addTo(map);
 L.control.locate({
     position: "topright",
     locateOptions: {
