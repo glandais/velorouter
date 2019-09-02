@@ -9,7 +9,7 @@ if (!location.hash && !map.restoreView()) {
 }
 
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-var ignApiKey = "5y8uj6lcncf69ar1ipqi57hh";
+var ignApiKey = "3x4sxz6b9nq23h4bvle9cw9k";
 var ignLayerMaps = "GEOGRAPHICALGRIDSYSTEMS.MAPS";
 var ignWmtsUrl = "https://wxs.ign.fr/" + ignApiKey + "/geoportail/wmts";
 var ignMaps = new L.TileLayer.WMTS(ignWmtsUrl,
