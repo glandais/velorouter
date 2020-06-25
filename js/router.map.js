@@ -52,7 +52,7 @@ var relief_base = L.tileLayer('https://gabriel.landais.org/relief/{z}/{x}/{y}.pn
 });
 var relief = L.layerGroup([relief_base, vector_osm]);
 
-var michelin_base = L.tileLayer('https://foil.fr/magic/magicCache/{z}/{x}/{y}.png', {
+var michelin_base = L.tileLayer('https://n-peloton.fr/magic/magicCache/{z}/{x}/{y}.png', {
     nativeZooms: [10, 11, 12]
 });
 
