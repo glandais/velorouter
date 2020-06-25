@@ -42,7 +42,7 @@ var ignEsMaps = new L.TileLayer.WMTS("https://www.ign.es/wmts/mapa-raster",
     }
 );
 
-var vector_osm = L.tileLayer('https://tile.waymarkedtrails.org/cycling/${z}/${x}/${y}.png', {
+var vector_osm = L.tileLayer('https://tile.waymarkedtrails.org/cycling/{z}/{x}/{y}.png', {
     nativeZooms: osmZooms
 });
 
