@@ -42,10 +42,7 @@ var ignEsMaps = new L.TileLayer.WMTS("https://www.ign.es/wmts/mapa-raster",
     }
 );
 
-// var vector_osm = L.tileLayer('https://a.tiles.mapbox.com/v4/glandais.71bb17c0/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xhbmRhaXMiLCJhIjoiZGQxMDNjODBlN2ZkMDEyNjJjN2E5MjEzNzk2YWU0NDUifQ.YyPJXAyXxk0wuXB1DBqymg', {
-//     nativeZooms: osmZooms
-// });
-var vector_osm = L.tileLayer('https://api.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xhbmRhaXMiLCJhIjoiZGQxMDNjODBlN2ZkMDEyNjJjN2E5MjEzNzk2YWU0NDUifQ.YyPJXAyXxk0wuXB1DBqymg', {
+var vector_osm = L.tileLayer('https://tile.waymarkedtrails.org/cycling/${z}/${x}/${y}.png', {
     nativeZooms: osmZooms
 });
 
@@ -63,9 +60,6 @@ var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     nativeZooms: osmZooms
 });
 var opentopomap = L.tileLayer('https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png', {
-    nativeZooms: osmZooms
-});
-var mb_out = L.tileLayer('https://api.mapbox.com/v4/mapbox.outdoors/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiZ2xhbmRhaXMiLCJhIjoiZGQxMDNjODBlN2ZkMDEyNjJjN2E5MjEzNzk2YWU0NDUifQ.YyPJXAyXxk0wuXB1DBqymg', {
     nativeZooms: osmZooms
 });
 var ocm = L.tileLayer('https://{s}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png?apikey=eb3d81660e5a465aacc7082bce749c3b', {
@@ -97,7 +91,6 @@ var baseMaps = {
     "OSM velo": ocm,
     "OSM classique": osm,
     "OpenTopoMap": opentopomap,
-    "Outdoors": mb_out,
     "IGN cartes": ignMaps,
     "Michelin": michelin,
     "Google Maps": gglRod,
