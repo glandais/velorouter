@@ -1,3 +1,24 @@
+
+// FeatureGroup is to store editable layers
+var drawnItems = new L.FeatureGroup();
+map.addLayer(drawnItems);
+var drawControl = new L.Control.Draw({
+    draw: {
+        polygon: false,
+        rectangle: false,
+        circle: false,
+        marker: false
+    },
+    edit: {
+        featureGroup: drawnItems
+    }
+});
+map.addControl(drawControl);
+
+map.on(L.Draw.Event.CREATED, function (e) {
+    drawnItems.addLayer(e.layer);
+});
+
 L.easyButton('fa-save', function (btn, map) {
 	gpxData = null;
     if (drawnItems.getLayers().length > 0) {
