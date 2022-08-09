@@ -9,7 +9,7 @@ if (!location.hash && !map.restoreView()) {
 }
 
 var osmZooms = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
-var ignApiKey = "3x4sxz6b9nq23h4bvle9cw9k";
+var ignApiKey = "g9d8p38fii9fkppmz096zqe4";
 var ignLayerMaps = "GEOGRAPHICALGRIDSYSTEMS.MAPS";
 var ignWmtsUrl = "https://wxs.ign.fr/" + ignApiKey + "/geoportail/wmts";
 var ignMaps = new L.TileLayer.WMTS(ignWmtsUrl,
@@ -52,7 +52,7 @@ var relief_base = L.tileLayer('https://gabriel.landais.org/relief/{z}/{x}/{y}.pn
 });
 var relief = L.layerGroup([relief_base, vector_osm]);
 
-var michelin_base = L.tileLayer('https://n-peloton.fr/magic/magicCache/{z}/{x}/{y}.png', {
+var michelin_base = L.tileLayer('https://gabriel.landais.org/michelin/{z}/{x}/{y}.png', {
     nativeZooms: [10, 11, 12]
 });
 
